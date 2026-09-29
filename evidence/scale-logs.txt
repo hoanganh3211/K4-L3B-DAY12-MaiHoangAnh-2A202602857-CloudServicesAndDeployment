@@ -1,0 +1,12 @@
+
+agent-3  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:24.925626+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 48, "tokens_out": 52, "cost_usd": 3.84e-05}
+agent-1  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:24.871073+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 3, "tokens_out": 41, "cost_usd": 2.505e-05}
+agent-1  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:25.042082+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 158, "tokens_out": 52, "cost_usd": 5.49e-05}
+agent-1  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:25.197005+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 324, "tokens_out": 52, "cost_usd": 7.98e-05}
+agent-3  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:25.091766+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 213, "tokens_out": 52, "cost_usd": 6.315e-05}
+agent-1  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:25.363074+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 491, "tokens_out": 52, "cost_usd": 0.00010485}
+agent-3  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:25.250189+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 380, "tokens_out": 52, "cost_usd": 8.82e-05}
+agent-2  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:24.992481+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 103, "tokens_out": 52, "cost_usd": 4.665e-05}
+agent-2  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:25.145705+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 269, "tokens_out": 52, "cost_usd": 7.155e-05}
+agent-2  | {"event": "ask_completed", "level": "info", "timestamp": "2026-09-29T03:56:25.306031+00:00", "user_id": "smoke-f5cac27aed66", "tokens_in": 435, "tokens_out": 52, "cost_usd": 9.645e-05}
+

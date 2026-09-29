@@ -1,0 +1,11 @@
+
+agent-3  | {"event": "service_stopped", "level": "info", "timestamp": "2026-09-29T03:56:55.288722+00:00", "service": "day12-agent"}
+agent-3  | INFO:     Application shutdown complete.
+agent-3  | INFO:     Finished server process [1]
+agent-1  | {"event": "service_stopped", "level": "info", "timestamp": "2026-09-29T03:56:55.253854+00:00", "service": "day12-agent"}
+agent-1  | INFO:     Application shutdown complete.
+agent-1  | INFO:     Finished server process [1]
+agent-2  | {"event": "service_stopped", "level": "info", "timestamp": "2026-09-29T03:56:55.319340+00:00", "service": "day12-agent"}
+agent-2  | INFO:     Application shutdown complete.
+agent-2  | INFO:     Finished server process [1]
+

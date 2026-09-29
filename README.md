@@ -1,5 +1,20 @@
 # K4 — Level 3B, Ngày 12: Hạ Tầng Cloud & Deployment (240 phút)
 
+[![CI](https://github.com/hoanganh3211/K4-L3B-DAY12-MaiHoangAnh-2A202602857-CloudServicesAndDeployment/actions/workflows/ci.yml/badge.svg)](https://github.com/hoanganh3211/K4-L3B-DAY12-MaiHoangAnh-2A202602857-CloudServicesAndDeployment/actions/workflows/ci.yml)
+
+Bài làm: **Mai Hoàng Anh — 2A202602857**. Platform: **Railway**.
+Badge phản ánh lần chạy trên GitHub; workflow mới cần được push để có kết quả.
+
+Chạy local: `docker compose up -d --build` sau khi đặt `AGENT_API_KEY` trong
+`.env`. Thử ba replica qua Nginx (tránh trùng cổng 8000):
+`docker compose -f docker-compose.yml -f docker-compose.scale.yml up -d --scale agent=3`.
+Chi tiết triển khai và bằng chứng nằm trong [DEPLOYMENT.md](DEPLOYMENT.md).
+
+Giới hạn của bài lab: `X-User-Id` do client cung cấp và dùng chung API key;
+đây chưa phải xác thực riêng từng người dùng. Cost guard kiểm tra chi tiêu
+đã ghi nhận trước khi gọi mock LLM; chưa giữ trước ngân sách cho các request
+đồng thời, nên không phải trần chi phí cứng cho một LLM tính phí thật.
+
 Đưa một AI agent từ `localhost:8000` lên một địa chỉ công khai mà người khác
 gọi được, có bảo mật, có giới hạn chi phí, và không sập khi bạn deploy bản mới.
 

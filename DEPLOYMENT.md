@@ -1,101 +1,83 @@
 # Thông Tin Deploy — Checkpoint 5
 
-> Điền file này sau khi deploy xong. `pytest tests/test_cp5.py` đọc file này
-> để tìm địa chỉ service của bạn và gọi thử.
->
-> **Chỉ ghi TÊN biến môi trường, tuyệt đối không dán giá trị API key vào đây.**
-> Repo này công khai — dán khóa vào là mất khóa.
-
-## Thông Tin Học Viên
+## Thông tin học viên
 
 | Mục | Nội dung |
-|-----|----------|
-| Họ và tên | (điền họ tên) |
-| Mã học viên | (điền mã học viên) |
-| Repo | (điền link repo K4-L3B-DAY12-HoVaTen-MSSV-CloudServicesAndDeployment) |
+|---|---|
+| Họ và tên | Mai Hoàng Anh |
+| Mã học viên | 2A202602857 |
+| Repo | https://github.com/hoanganh3211/K4-L3B-DAY12-MaiHoangAnh-2A202602857-CloudServicesAndDeployment |
 
 ## Service
 
 | Mục | Nội dung |
-|-----|----------|
-| Public URL | https://TODO-thay-bang-url-that.up.railway.app |
-| Platform | Railway / Render / Cloud Run — (điền platform bạn dùng) |
-| Ngày deploy | (điền ngày) |
+|---|---|
+| Public URL | https://day12-agent-production-5f3e.up.railway.app |
+| Platform | Railway |
+| Ngày cấu hình | 29/09/2026 |
+| Trạng thái | Đang chờ cấu hình API key và xác minh healthcheck |
+| Service | day12-agent |
+| Redis | day12-redis, trong cùng project và environment production |
 
-## Biến Môi Trường Đã Set Trên Cloud
+## Biến môi trường
 
-Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
+Chỉ ghi tên và nguồn, không ghi giá trị secret.
 
-| Biến | Đã set | Ghi chú |
-|------|--------|---------|
-| `PORT` | ✅ | platform tự gán |
-| `AGENT_API_KEY` | ✅ | đặt trong dashboard, không nằm trong repo |
-| `REDIS_URL` | ✅ | (điền: Redis add-on của platform / Upstash / ...) |
-| `RATE_LIMIT_PER_MINUTE` | ✅ | 10 |
-| `MONTHLY_BUDGET_USD` | ✅ | 10.0 |
-| `LOG_LEVEL` | ✅ | INFO |
+| Biến | Nguồn |
+|---|---|
+| PORT | Railway cấp tự động; Docker CMD đọc biến này |
+| AGENT_API_KEY | Secret do chủ tài khoản nhập trong Railway Variables |
+| REDIS_URL | Tham chiếu URL của service day12-redis qua mạng riêng |
+| RATE_LIMIT_PER_MINUTE | Railway Variables, hạn mức lab 10 |
+| MONTHLY_BUDGET_USD | Railway Variables, ngân sách lab 10.0 |
+| LOG_LEVEL | Railway Variables, INFO |
 
-## Lệnh Kiểm Tra
+`DEPLOY_API_KEY` là biến chỉ dùng ở máy kiểm thử, lấy cùng giá trị khóa API
+của service và lưu trong `.env` không được Git theo dõi. Không phải Railway token.
 
-Thay `<URL>` bằng Public URL ở trên:
+## Kiểm tra lặp lại
 
-```bash
-# 1. Liveness — mong đợi 200 {"status":"ok"}
-curl -i <URL>/health
-
-# 2. Readiness — mong đợi 200 {"status":"ready"} (đã nối được Redis)
-curl -i <URL>/ready
-
-# 3. Không có API key — mong đợi 401
-curl -i -X POST <URL>/ask \
-  -H "Content-Type: application/json" \
-  -d '{"question":"Hello"}'
-
-# 4. Có API key — mong đợi 200 kèm câu trả lời
-curl -i -X POST <URL>/ask \
-  -H "Content-Type: application/json" \
-  -H "X-API-Key: $AGENT_API_KEY" \
-  -H "X-User-Id: sv-test" \
-  -d '{"question":"Deploy là gì?"}'
-
-# 5. Rate limit — gọi 15 lần, những lần cuối phải trả 429
-for i in $(seq 1 15); do
-  curl -s -o /dev/null -w "%{http_code} " -X POST <URL>/ask \
-    -H "Content-Type: application/json" \
-    -H "X-API-Key: $AGENT_API_KEY" \
-    -H "X-User-Id: sv-test" \
-    -d '{"question":"test"}'
-done; echo
+```powershell
+.\.venv\Scripts\python scripts/smoke.py --url https://day12-agent-production-5f3e.up.railway.app --output evidence/cloud-smoke.json
+.\.venv\Scripts\python -m pytest tests/ -v
+.\.venv\Scripts\python grade.py
 ```
 
-## Kết Quả Chạy Thật
+Script smoke đọc khóa từ môi trường, không in khóa. Nó kiểm tra health,
+ready, 401, lịch sử hội thoại và 429 với user_id riêng cho mỗi lần chạy.
 
-Dán output của các lệnh trên vào đây:
+## Bằng chứng thực tế local
 
-```
-(điền output)
-```
+- `evidence/local-smoke.json`: Docker agent + Redis thật; health/ready 200,
+  thiếu key 401, 10 request thành công sau đó 5 request bị 429.
+- `evidence/scale-smoke.json`: cùng phép thử qua Nginx và ba replica.
+- `evidence/scale-logs.txt`: cùng user_id được phục vụ ở agent-1, agent-2,
+  agent-3; history_length tăng 0, 2, ..., 18.
+- `evidence/compose-ps.txt`: trạng thái stack ba replica.
+- CP1–CP4 và ba kiểm tra hồi quy: 73 passed, gồm build Docker thật.
+- Runtime chạy với UID 10001 (appuser).
+- Restart ba agent cho log `service_stopped`, `Application shutdown complete`
+  và `Finished server process [1]`; không cần chờ SIGKILL.
 
-## Ảnh Chụp Màn Hình
+## CI/CD
 
-Đặt ảnh trong thư mục `screenshots/`:
+Workflow `.github/workflows/ci.yml` chạy test và build image cho push/PR.
+Job deploy phụ thuộc job test, chỉ chạy push main khi có GitHub variable
+`RAILWAY_SERVICE_ID`. Cấu hình GitHub environment `production`, secret
+`RAILWAY_TOKEN` (project token) và variable `RAILWAY_SERVICE_ID` trước khi bật
+job deploy. Không đặt token vào source hay tài liệu. Nếu dùng GitHub Actions
+để deploy, tắt auto deploy độc lập của Railway hoặc bật cơ chế chờ CI để
+tránh deploy trước khi test xanh.
 
-- `screenshots/dashboard.png` — trang quản lý service trên platform
-- `screenshots/health.png` — kết quả gọi `/health` từ trình duyệt hoặc curl
+Tài liệu tham khảo: [Railway CLI deploying](https://docs.railway.com/cli/deploying),
+[Railway healthchecks](https://docs.railway.com/deployments/healthchecks).
+Railway dùng `/ready` khi chuyển sang deployment mới; Docker dùng `/health`.
 
----
+## Ảnh minh chứng
 
-## Nếu Dùng Phương Án Dự Phòng
+Ảnh dashboard và /health sẽ lưu trong `screenshots/` sau khi bản cloud hoạt động.
+Không dùng LOCAL_FALLBACK để thay thế kết quả deploy Railway.
 
-Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng CP5 tối đa 60% điểm:
+## Lý do sử dụng Local Fallback
 
-1. Đặt `LOCAL_FALLBACK=true` trong `.env`
-2. Chạy `docker compose up -d` rồi kiểm tra `docker compose ps`
-3. Chụp màn hình vào `screenshots/`
-4. Chạy `pytest tests/test_cp5.py -v` — bộ test sẽ tự chuyển sang kiểm tra
-   `http://localhost:8000`
-5. Ghi rõ lý do không deploy được vào phần dưới đây:
-
-```
-(điền lý do nếu dùng phương án dự phòng, ngược lại xóa mục này)
-```
+Do url https://day12-agent-production-5f3e.up.railway.app/ask báo lỗi 404 Not Found, em sử dụng phương án dự phòng LOCAL_FALLBACK.

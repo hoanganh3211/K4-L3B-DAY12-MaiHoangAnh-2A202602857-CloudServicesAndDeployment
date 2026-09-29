@@ -1,0 +1,6 @@
+NAME                                          IMAGE                                       COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+k4-l3b-cloud-service-and-deployment-agent-1   k4-l3b-cloud-service-and-deployment-agent   "sh -c 'exec uvicorn…"   agent     2 minutes ago   Up 2 minutes (healthy)   8000/tcp
+k4-l3b-cloud-service-and-deployment-agent-2   k4-l3b-cloud-service-and-deployment-agent   "sh -c 'exec uvicorn…"   agent     2 minutes ago   Up 2 minutes (healthy)   8000/tcp
+k4-l3b-cloud-service-and-deployment-agent-3   k4-l3b-cloud-service-and-deployment-agent   "sh -c 'exec uvicorn…"   agent     2 minutes ago   Up 2 minutes (healthy)   8000/tcp
+k4-l3b-cloud-service-and-deployment-nginx-1   nginx:stable-alpine                         "/docker-entrypoint.…"   nginx     2 minutes ago   Up 2 minutes             0.0.0.0:8000->80/tcp, [::]:8000->80/tcp
+k4-l3b-cloud-service-and-deployment-redis-1   redis:7-alpine                              "docker-entrypoint.s…"   redis     5 minutes ago   Up 5 minutes (healthy)   0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp

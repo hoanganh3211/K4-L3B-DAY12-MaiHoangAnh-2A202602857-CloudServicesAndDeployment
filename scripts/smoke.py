@@ -22,7 +22,7 @@ def main():
         for path in ("/health", "/ready"):
             response = client.get(path)
             observations.append({"path": path, "status": response.status_code, "body": response.json()})
-            assert response.status_code == 200
+            assert response.status_code == 200, f"{path}: {response.status_code} {response.text[:500]}"
         response = client.post("/ask", json={"question": "Hello"})
         observations.append({"path": "/ask without key", "status": response.status_code})
         assert response.status_code == 401

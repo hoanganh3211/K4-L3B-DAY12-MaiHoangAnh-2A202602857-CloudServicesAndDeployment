@@ -1,0 +1,55 @@
+[
+  {
+    "path": "/health",
+    "status": 200,
+    "body": {
+      "status": "ok",
+      "service": "day12-agent",
+      "version": "1.0.0"
+    }
+  },
+  {
+    "path": "/ready",
+    "status": 200,
+    "body": {
+      "status": "ready",
+      "redis": true
+    }
+  },
+  {
+    "path": "/ask without key",
+    "status": 401
+  },
+  {
+    "path": "/ask with key",
+    "statuses": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      200,
+      429,
+      429,
+      429,
+      429,
+      429
+    ],
+    "history_lengths": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18
+    ]
+  }
+]

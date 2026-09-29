@@ -1,0 +1,6 @@
+Measured 2026-09-29 using docker image inspect --format '{{.RepoTags}} {{.Size}}'
+[day12-agent:single] 1728274260 bytes
+[day12-agent:cp2-test] 310887108 bytes
+Docker CLI display: single 1.73GB; multi-stage 311MB.
+The baseline also changes the base image and pip cache policy, so this is not
+an isolated measurement of the multi-stage technique alone.
