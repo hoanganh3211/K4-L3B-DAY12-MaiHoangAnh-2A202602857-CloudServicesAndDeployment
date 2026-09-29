@@ -4,3 +4,11 @@
 
 .git
 .gitignore
+.env
+__pycache__
+.venv
+*.py[cod]
+.pytest_cache
+.env.*
+!.env.example
+screenshots
