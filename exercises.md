@@ -164,4 +164,17 @@ Ghi lại **một** lỗi bạn gặp khi deploy lên cloud (build fail, health 
 timeout, sai REDIS_URL, app không đọc `$PORT`...): thông báo lỗi là gì, bạn
 tìm ra nguyên nhân bằng cách nào, và sửa ra sao?
 
-> *Câu trả lời của bạn*
+Trong quá trình triển khai lên Railway, gặp lỗi: "404 Not Found" khi truy
+cập `/ask` và "500 Internal Server Error" khi truy cập `/ready` trên URL
+public. Nguyên nhân chính là do biến môi trường REDIS_URL chưa được cấu hình
+đúng trên Railway, dẫn đến việc service không thể khởi tạo Redis và thất bại
+trong các health check cơ bản.
+
+Hướng xử lý:
+
+    Xác định lỗi bằng cách xemlogs container và health check status.
+    Sửa lại Dockerfile và Railway environment variables bằng cách thêm cấu hình
+    REDIS_URL.
+
+Hiện tại đã xử lý lỗi bằng cách sử dụng LOCAL_FALLBACK, cho phép service
+chạy cục bộ trên máy với Redis được quản lý thông qua Docker Compose.
